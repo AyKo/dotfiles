@@ -15,19 +15,32 @@ else
   let ostype = system("uname")
 endif
 
+"-------------------------------------------------------------------------
+" Vundle
+"-------------------------------------------------------------------------
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+" github
+Bundle 'gmarik/vundle'
+Bundle 'Shougo/unite.vim'
+Bundle 'thinca/vim-ref'
+Bundle 'harajune/git-vim'
+" www.vim.org
+Bundle 'a.vim'
+Bundle 'DoxygenToolkit.vim'
+filetype plugin indent on
 
 "-------------------------------------------------------------------------
-" 色の設定
-"   koehlerがベース
+" 色の設定 : koehlerがベース
 "-------------------------------------------------------------------------
 function! SetColorscheme()
     hi clear
-    "colorscheme koehler
     set background=dark
     if exists("syntax_on")
       syntax reset
     endif
-    let g:colors_name = "koehler"
+    let g:colors_name = "my-koehler"
     hi Normal         guifg=white guibg=black
     hi Scrollbar      guifg=darkcyan guibg=cyan
     hi Menu           guifg=black guibg=cyan
@@ -243,7 +256,7 @@ endif
 "---------------------------------------------------------------------------
 " GREP
 "---------------------------------------------------------------------------
-if version >= 700
+if  has("gui_win32")
   " 内蔵grep
   " set grepprg=internal
   " lv
@@ -311,6 +324,7 @@ filetype plugin on
 " Make時にかかった時間を表示したい
 "set makeprg=time\ make
 set makeprg=make
+"set makeprg=scons
 
 "---------------------------------------------------------------------------
 " ファイル名に大文字小文字の区別がないシステム用の設定:
@@ -329,6 +343,34 @@ if !has('gui_running') && has('xterm_clipboard')
 endif
 
 "---------------------------------------------------------------------------
+" (Plugin) unite
+"  http://d.hatena.ne.jp/ruedap/20110110/vim_unite_plugin
+"-------------------------------------------------------------------------
+" 入力モードで開始する
+" let g:unite_enable_start_insert=1
+" バッファ一覧
+nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
+" ファイル一覧
+nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+" レジスタ一覧
+nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+" 最近使用したファイル一覧
+nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
+" 常用セット
+nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
+" 全部乗せ
+nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
+" ウィンドウを分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+" ウィンドウを縦に分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+" ESCキーを2回押すと終了する
+au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
+au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
+
+"---------------------------------------------------------------------------
 " (Plugin) MiniBufExplorer
 "-------------------------------------------------------------------------
 let g:miniBufExplMapWindowNavVim = 1
@@ -336,11 +378,6 @@ let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBuffs = 1
 " MiniBufExplorerの最大の高さ
 let g:miniBufExplMaxSize = 2
-
-"---------------------------------------------------------------------------
-" (Plugin) ManpageView
-"-------------------------------------------------------------------------
-let g:manpageview_winopen = "hsplit="
 
 "---------------------------------------------------------------------------
 " (Plugin) AutoDate
@@ -500,9 +537,9 @@ if match(ostype, "SunOS") >= 0
 
   " vim-help color-xterm より
   ""   256色対応
-  ":set t_Co=256
-  ":set t_AB=m
-  ":set t_AF=m
+  "set t_Co=256
+  "set t_AB=m
+  "set t_AF=m
   "
 
   " vim-help color-xterm より
@@ -546,15 +583,24 @@ map <C-e> :GtagsCursor<CR>
 map <C-y> :Gtags -r <CR>
 
 
-"#########################################################################
+"-------------------------------------------------------------------------
 " マクロ
-"#########################################################################
+"-------------------------------------------------------------------------
 
 "-------------------------------------------------------------------------
 " タブとかの設定をemacsモードに
-function! SetTabEmacs()
+command SetTabEmacs call s:SetTabEmacs()
+function! s:SetTabEmacs()
     set ts=8
     set sw=2
     set sts=2
+endfunction
+
+command SetTab2 call s:SetTab2()
+function! s:SetTab2()
+    set ts=8
+    set sw=2
+    set sts=2
+    set expandtab
 endfunction
 

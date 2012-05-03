@@ -23,59 +23,20 @@ setopt bsd_echo                          # echo を BSD互換に
 alias ls='ls --show-control-chars --color=auto -F'
 alias rm='rm -i'
 alias mv='mv -i'
+alias cp='cp -i'
 alias w3m=$HOME/bin/w3m
 alias google='w3m google.co.jp'
+alias groff-man='groff -mandoc -Tutf8'
 
-# color
-#local gray=$'%{\e[0;30m%}'
-#local red=$'%{\e[0;31m%}'          # 赤色
-#local green=$'%{\e[0;32m%}'        # 緑色
-#local yellow=$'%{\e[0;33m%}'       # 黄色
-#local blue=$'%{\e[0;34m%}'         # 青色
-#local purple=$'%{\e[0;35m%}'       # 紫色
-#local light_blue=$'%{\e[0;36m%}'   # 水色
-#local white=$'%{\e[0;37m%}'        # 白色
-#local GRAY=$'%{\e[1;30m%}'
-#local RED=$'%{\e[1;31m%}'          # 赤色
-#local GREEN=$'%{\e[1;32m%}'        # 緑色
-#local YELLOW=$'%{\e[1;33m%}'       # 黄色
-#local BLUE=$'%{\e[1;34m%}'         # 青色
-#local PURPLE=$'%{\e[1;35m%}'       # 紫色
-#local LIGHT_BLUE=$'%{\e[1;36m%}'   # 水色
-#local WHITE=$'%{\e[1;37m%}'        # 白色
-#local DEFAULT=$white               # 標準の色
-
-# プロンプトの設定
+## プロンプトの設定
 #
-# SSH_CLIENT='192.168.243.1 49616 22'
-# SSH_CONNECTION='192.168.243.1 49616 192.168.243.128 22'
-#
-#PROMPT="$? $GREEN%~$BLACK $HOSTNAME $GREEN
-#%(!.#.$)%b $DEFAULT"               # 左表示
-#RPROMPT="$BLUE `hostname`[ $SSH_AGENT_PID ] $DEFAULT" # 右表示
-#PROMPT2="%_%%"                     # 複数行入力時
-#SPROMPT="%r is correct?[n,y]:%"    # 入力ミス時
 autoload colors
 colors
 PROMPT="%{${fg[green]}%}[%n@%m] %{${fg[yellow]}%}%~
 %{${reset_color}%}%(!.#.$) "
-#PROMPT="%{${fg[blue]}%}[%n@%m] %{${fg[green]}} %~
-#%{${reset_color}%}%(!.#.$) "
-#SSHの接続先/元のIPを表示
-#if [ -z $SSH_CLIENT ]; then
-#PROMPT="%{${fg[green]}%}[%n@%m] %{${fg[yellow]}%}%~
-#%{${reset_color}%}%(!.#.$) "
-#else
-#SSH_FROM=$(echo $SSH_CONNECTION | cut -d ' ' -f 1)
-#SSH_TO=$(echo $SSH_CONNECTION | cut -d ' ' -f 3)
-#PROMPT="%{${fg[green]}%}[%n@%m](ssh ${SSH_FROM}->${SSH_TO}) %{${fg[yellow]}%}%~
-#%{${reset_color}%}%(!.#.$) "
-#fi
-
 PROMPT2="%{${fg[blue]}%}%_> %{${reset_color}%}"
 SPROMPT="%{${fg[red]}%}correct: %R -> %r [nyae]? %{${reset_color}%}"
 RPROMPT=""
-#RPROMPT="%{${fg[blue]}%}[%~]%{${reset_color}%}"
 
 ## Command history configuration
 #
@@ -84,8 +45,8 @@ HISTSIZE=10000
 SAVEHIST=10000
 
 ## Keybind configuration
-# vi like keybind
 #
+# vi like keybind
 bindkey -v
  
 # historical backward/forward search with linehead string binded to ^P/^N
