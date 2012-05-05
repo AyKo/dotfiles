@@ -28,6 +28,13 @@ alias w3m=$HOME/bin/w3m
 alias google='w3m google.co.jp'
 alias groff-man='groff -mandoc -Tutf8'
 
+## xterm-256colorが可能なら設定する
+if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+  export TERM='xterm-256color'
+else
+  export TERM='xterm-color'
+fi
+
 ## プロンプトの設定
 #
 autoload colors
